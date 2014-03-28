@@ -1,5 +1,5 @@
 CC = g++
-CFLAG = -c -std=c++11 -Wall -Wextra -I "/Users/lisihan969/programing/C++_programing/wordament/src"
+CFLAG = -c -std=c++11 -Wall -Wextra -I "/Users/lisihan969/programing/C++_programing/wordament_ai/src"
 
 bin/solver: obj/main.o obj/dictionary.o obj/wordament_ai.o | bin
 	$(CC) -o $@ $^
