@@ -28,6 +28,8 @@ class WordamentAI
     static void PrintSolution(const Node *last_node);
     static bool NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
                             const wordament_ai::WordamentAI::Node &node2);
+    static int CharactorScore(const std::string &char_string);
+    static void AdjustScore(Node *node);
     static bool IsPrefix(const std::string &word);
 
     Dictionary dictionary_;

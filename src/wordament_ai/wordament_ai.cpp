@@ -200,7 +200,8 @@ void WordamentAI::PrintSolution(const Node *last_node)
 bool WordamentAI::NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
                               const wordament_ai::WordamentAI::Node &node2)
 {
-    return node1.word_now.size() < node2.word_now.size();
+
+    return node1.score < node2.score;
 }
 
 
@@ -228,7 +229,8 @@ WordamentAI::Node::Node(const Node *old_node, int direction,
           currrent_col(old_node->currrent_col +
                        direction_col_offset[direction]),
           previous_moves(old_node->previous_moves),
-          word_now(old_node->word_now)
+          word_now(old_node->word_now),
+          score(old_node->score)
 {
     // copy the old status
     for (int row = 0; row < GAME_MAP_SIZE; row++)
