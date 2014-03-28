@@ -9,9 +9,9 @@ At present it only supports Unix-like systems (Linux, OS X, etc.).
 
 ## Features
 
-Short responsing time.
+* Short responsing time.
 
-Visual solutions displayed in color.
+* Visual solutions displayed in color.
 
 
 ## Installation
