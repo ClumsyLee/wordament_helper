@@ -50,9 +50,7 @@ struct WordamentAI::Node
 WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
         : dictionary_(),
           dictionary_word_count_(0),
-          node_stack_(),
-          words_found_(),
-          solution_nodes_()
+          node_stack_()
 {
     // load dictionaries
     for (std::string filename : dictionary_files)
@@ -72,9 +70,8 @@ WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
 
 int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 {
-    // make sure the previous found words have been deleted
-    words_found_.clear();
-    solution_nodes_.clear();
+    std::vector<Node> solution_nodes_;
+    std::unordered_set<std::string> words_found_;
 
     // push the first nodes, only if they are in dictionary
     for (int row = 0; row < GAME_MAP_SIZE; row++)
