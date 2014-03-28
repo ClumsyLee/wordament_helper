@@ -34,6 +34,8 @@ struct WordamentAI::Node
     Node(int row, int col, const std::string &word);
     Node(const Node *old_node, int direction, const std::string &add_on_word);
 
+    bool operator<(const Node &node) const { return score < node.score; }
+
     bool moved_squares[GAME_MAP_SIZE][GAME_MAP_SIZE];
     int currrent_row;
     int currrent_col;
@@ -95,8 +97,11 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
             auto insert_result = words_found.insert(node->word_now);
             if (insert_result.second == true)  // found a new word
             {
-                // save the solution
-                solution_nodes.push_back(*node);
+                // adjust the score, and then save the solution.
+                // node might be used later, so do not change it directly.
+                Node word_node = *node;
+                AdjustScore(&word_node);
+                solution_nodes.push_back(word_node);
             }
         }
         if (!(word_property & Dictionary::IS_SUB_WORD))
@@ -131,7 +136,7 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
     }  // end of the while loop
 
     // sort the nodes
-    std::sort(solution_nodes.begin(), solution_nodes.end(), NodeIsWorse);
+    std::sort(solution_nodes.begin(), solution_nodes.end());
     // print the nodes in order
     for (const Node &node : solution_nodes)
     {
@@ -189,19 +194,40 @@ void WordamentAI::PrintSolution(const Node *last_node)
             std::cout << map_to_print[row][col] << " ";
         }
         if (row == GAME_MAP_SIZE - 1)  // last row
-            // print the word
-            std::cout << "    " << last_node->word_now;
+            // print the word and score
+            std::cout << "    " << last_node->word_now
+                      << "    " << last_node->score;
         std::cout << std::endl;
     }
     // print a separator line
     std::cout << std::endl;
 }
 
-bool WordamentAI::NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
-                              const wordament_ai::WordamentAI::Node &node2)
-{
 
-    return node1.score < node2.score;
+int WordamentAI::CharactorScore(const std::string &char_string)
+{
+    static const int charactor_score[26] = {
+        2, 5, 3, 3, 1, 5, 4, 4, 2, 10,
+        6, 3, 4, 2, 2, 4, 0, 2, 2, 2,
+        4, 6, 6, 0, 5, 8
+    };
+    char first_charactor = char_string[0] - 'a';
+    if (first_charactor < 0 || first_charactor >= 26)
+        return 0;
+    return charactor_score[static_cast<int>(first_charactor)];
+}
+void WordamentAI::AdjustScore(Node *node)
+{
+    int size = node->word_now.size();
+    if (size >= 4)  // need to adjust
+    {
+        if (size <= 5)  // x1.5
+            node->score = node->score * 3 / 2;
+        else if (size <= 7)  // x2
+            node->score *= 2;
+        else  // x3
+            node->score *= 3;
+    }
 }
 
 
@@ -212,7 +238,7 @@ WordamentAI::Node::Node(int row, int col, const std::string &word)
           currrent_col(col),
           previous_moves(),
           word_now(word),
-          score(0)
+          score(CharactorScore(word))
 {
     // prefix can only be added by this function (brand new node)
     if (IsPrefix(word))
@@ -230,7 +256,7 @@ WordamentAI::Node::Node(const Node *old_node, int direction,
                        direction_col_offset[direction]),
           previous_moves(old_node->previous_moves),
           word_now(old_node->word_now),
-          score(old_node->score)
+          score(old_node->score + CharactorScore(add_on_word))
 {
     // copy the old status
     for (int row = 0; row < GAME_MAP_SIZE; row++)
