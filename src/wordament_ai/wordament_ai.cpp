@@ -72,8 +72,6 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
     for (int row = 0; row < GAME_MAP_SIZE; row++)
         for (int col = 0; col < GAME_MAP_SIZE; col++)
         {
-            // as far as I know, one-square will not form a word in the game
-            // so any whole word that is in dictionary here will not be saved.
             // create new node so it will deal with last '-' in prefix
             Node *node = new Node(row, col, game_map[row][col]);
             node_stack_.push(node);
@@ -154,6 +152,7 @@ void WordamentAI::PrintSolution(const Node *last_node)
     int currrent_col = last_node->currrent_col;
     // print a red ● to the last position
     map_to_print[currrent_row][currrent_col] = "\e[31m●\e[0m";
+
     const std::vector<int> &moves = last_node->previous_moves;
 
     // loop until the first position
@@ -167,12 +166,17 @@ void WordamentAI::PrintSolution(const Node *last_node)
         map_to_print[currrent_row][currrent_col] = direction_arrow[last_move];
     }
 
-    // the first arrow
-    int first_move = moves[0];
-    currrent_row -= direction_row_offset[first_move];
-    currrent_col -= direction_col_offset[first_move];
-    map_to_print[currrent_row][currrent_col] =
-            green_direction_arrow[first_move];
+    // as far as I know, one-square will not form a word in the game.
+    // however, it's better to double check, for something like "pre".
+    // so check before drawing the first arrow.
+    if (moves.size() > 0)
+    {
+        int first_move = moves[0];
+        currrent_row -= direction_row_offset[first_move];
+        currrent_col -= direction_col_offset[first_move];
+        map_to_print[currrent_row][currrent_col] =
+                green_direction_arrow[first_move];
+    }
 
     // print it to screen
     for (int row = 0; row < GAME_MAP_SIZE; row++)
