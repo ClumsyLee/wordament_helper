@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <stack>
 #include <string>
+#include <unordered_set>
 #include <vector>
 #include "wordament_ai/dictionary.h"
 
@@ -30,6 +31,7 @@ class WordamentAI
     Dictionary dictionary_;
     std::int_least32_t dictionary_word_count_;
     std::stack<Node *> node_stack_;
+    std::unordered_set<std::string> words_found_;
 };
 
 }  // namesapce wordament_ai
