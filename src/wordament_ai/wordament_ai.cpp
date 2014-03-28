@@ -208,7 +208,7 @@ WordamentAI::Node::Node(int row, int col, const std::string &word)
     // prefix can only be added by this function (brand new node)
     if (IsPrefix(word))
     {
-        word.pop_back();  // delete the last '-'
+        word_now.pop_back();  // delete the last '-'
     }
     moved_squares[row][col] = true;
 }
