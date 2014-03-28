@@ -133,7 +133,7 @@ void WordamentAI::PrintSolution(const Node *last_node)
     for (int row = 0; row < GAME_MAP_SIZE; row++)
         for (int col = 0; col < GAME_MAP_SIZE; col++)
         {
-            map_to_print[row][col] = "*";
+            map_to_print[row][col] = ".";
         }
 
     // add arrows to the map
