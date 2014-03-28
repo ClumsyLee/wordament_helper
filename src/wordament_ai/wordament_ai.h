@@ -26,6 +26,8 @@ class WordamentAI
     struct Node;
 
     static void PrintSolution(const Node *last_node);
+    static bool NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
+                            const wordament_ai::WordamentAI::Node &node2);
 
     Dictionary dictionary_;
     std::int_least32_t dictionary_word_count_;

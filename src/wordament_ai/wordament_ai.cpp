@@ -23,12 +23,6 @@ namespace
         "\e[32m↖\e[0m", "\e[32m↙\e[0m", "\e[32m↗\e[0m", "\e[32m↘\e[0m"
     };
 
-    inline bool NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
-                            const wordament_ai::WordamentAI::Node &node2)
-    {
-        return node1.word_now.size() < node2.word_now.size();
-    }
-
 }  // unnamed namespace
 
 namespace wordament_ai
@@ -194,6 +188,13 @@ void WordamentAI::PrintSolution(const Node *last_node)
     // print a separator line
     std::cout << std::endl;
 }
+
+bool WordamentAI::NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
+                              const wordament_ai::WordamentAI::Node &node2)
+{
+    return node1.word_now.size() < node2.word_now.size();
+}
+
 
 // functions for Node
 WordamentAI::Node::Node(int row, int col, const std::string &word)
