@@ -64,8 +64,8 @@ WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
 
 int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 {
-    std::vector<Node> solution_nodes_;
-    std::unordered_set<std::string> words_found_;
+    std::vector<Node> solution_nodes;
+    std::unordered_set<std::string> words_found;
 
     // push the first nodes, only if they are in dictionary
     for (int row = 0; row < GAME_MAP_SIZE; row++)
@@ -95,11 +95,11 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
         if (word_property & Dictionary::IS_WORD)  // is a word
         {
             // check in the found list
-            auto insert_result = words_found_.insert(node->word_now);
+            auto insert_result = words_found.insert(node->word_now);
             if (insert_result.second == true)  // found a new word
             {
                 // save the solution
-                solution_nodes_.push_back(*node);
+                solution_nodes.push_back(*node);
             }
         }
         if (!(word_property & Dictionary::IS_SUB_WORD))
@@ -130,12 +130,12 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
     }  // end of the while loop
 
     // sort the nodes
-    std::sort(solution_nodes_.begin(), solution_nodes_.end(), NodeIsWorse);
-    for (const Node &node : solution_nodes_)
+    std::sort(solution_nodes.begin(), solution_nodes.end(), NodeIsWorse);
+    for (const Node &node : solution_nodes)
     {
         PrintSolution(&node);
     }
-    return words_found_.size();
+    return words_found.size();
 }
 
 void WordamentAI::PrintSolution(const Node *last_node)
