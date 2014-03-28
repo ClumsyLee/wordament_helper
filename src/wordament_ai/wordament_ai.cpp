@@ -197,6 +197,11 @@ WordamentAI::Node::Node(const Node *old_node, int direction,
           previous_moves(old_node->previous_moves),
           word_now(old_node->word_now)
 {
+    for (int row = 0; row < GAME_MAP_SIZE; row++)
+        for (int col = 0; col < GAME_MAP_SIZE; col++)
+        {
+            moved_squares[row][col] = old_node->moved_squares[row][col];
+        }
     moved_squares[currrent_row][currrent_col] = true;
     previous_moves.push_back(direction);  // record direction
     word_now += add_on_word;  // avoid temporary string object
