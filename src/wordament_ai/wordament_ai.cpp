@@ -25,6 +25,7 @@ namespace
 
 }  // unnamed namespace
 
+
 namespace wordament_ai
 {
 
@@ -38,7 +39,9 @@ struct WordamentAI::Node
     int currrent_col;
     std::vector<int> previous_moves;
     std::string word_now;
+    int score;
 };
+
 
 // functions for WordamentAI
 WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
@@ -207,7 +210,8 @@ WordamentAI::Node::Node(int row, int col, const std::string &word)
           currrent_row(row),
           currrent_col(col),
           previous_moves(),
-          word_now(word)
+          word_now(word),
+          score(0)
 {
     // prefix can only be added by this function (brand new node)
     if (IsPrefix(word))
