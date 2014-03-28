@@ -173,6 +173,8 @@ void WordamentAI::PrintSolution(const Node *last_node)
             std::cout << "    " << last_node->word_now;
         std::cout << std::endl;
     }
+    // print a separator line
+    std::cout << std::endl;
 }
 
 // functions for Node
