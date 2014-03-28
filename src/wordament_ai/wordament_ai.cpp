@@ -64,6 +64,7 @@ WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
 
 int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 {
+    // save the solution nodes and the words
     std::vector<Node> solution_nodes;
     std::unordered_set<std::string> words_found;
 
@@ -131,6 +132,7 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 
     // sort the nodes
     std::sort(solution_nodes.begin(), solution_nodes.end(), NodeIsWorse);
+    // print the nodes in order
     for (const Node &node : solution_nodes)
     {
         PrintSolution(&node);
