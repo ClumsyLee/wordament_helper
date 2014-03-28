@@ -194,9 +194,13 @@ void WordamentAI::PrintSolution(const Node *last_node)
             std::cout << map_to_print[row][col] << " ";
         }
         if (row == GAME_MAP_SIZE - 1)  // last row
+        {
             // print the word and score
-            std::cout << "    " << last_node->word_now
-                      << "    " << last_node->score;
+            std::cout << "    ";
+            std::cout.width(12);
+            std::cout << std::left << last_node->word_now
+                      << " " << last_node->score;
+        }
         std::cout << std::endl;
     }
     // print a separator line
@@ -216,6 +220,7 @@ int WordamentAI::CharactorScore(const std::string &char_string)
         return 0;
     return charactor_score[static_cast<int>(first_charactor)];
 }
+
 void WordamentAI::AdjustScore(Node *node)
 {
     int size = node->word_now.size();
