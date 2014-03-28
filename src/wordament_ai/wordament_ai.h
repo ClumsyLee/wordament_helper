@@ -8,7 +8,6 @@
 #include <vector>
 #include "wordament_ai/dictionary.h"
 
-
 namespace wordament_ai
 {
 
@@ -32,6 +31,7 @@ class WordamentAI
     std::int_least32_t dictionary_word_count_;
     std::stack<Node *> node_stack_;
     std::unordered_set<std::string> words_found_;
+    std::vector<Node> solution_nodes_;
 };
 
 }  // namesapce wordament_ai

@@ -1,5 +1,6 @@
 #include "wordament_ai/wordament_ai.h"
 #include <cstdlib>
+#include <algorithm>
 #include <iostream>
 #include <vector>
 
@@ -21,6 +22,12 @@ namespace
         "\e[32m↑\e[0m", "\e[32m↓\e[0m", "\e[32m←\e[0m", "\e[32m→\e[0m",
         "\e[32m↖\e[0m", "\e[32m↙\e[0m", "\e[32m↗\e[0m", "\e[32m↘\e[0m"
     };
+
+    inline bool NodeIsWorse(const wordament_ai::WordamentAI::Node &node1,
+                            const wordament_ai::WordamentAI::Node &node2)
+    {
+        return node1.word_now.size() < node2.word_now.size();
+    }
 
 }  // unnamed namespace
 
@@ -44,7 +51,8 @@ WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
         : dictionary_(),
           dictionary_word_count_(0),
           node_stack_(),
-          words_found_()
+          words_found_(),
+          solution_nodes_()
 {
     // load dictionaries
     for (std::string filename : dictionary_files)
@@ -66,6 +74,7 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 {
     // make sure the previous found words have been deleted
     words_found_.clear();
+    solution_nodes_.clear();
 
     // push the first nodes, only if they are in dictionary
     for (int row = 0; row < GAME_MAP_SIZE; row++)
@@ -98,8 +107,8 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
             auto insert_result = words_found_.insert(node->word_now);
             if (insert_result.second == true)  // found a new word
             {
-                // print solution immediately
-                PrintSolution(node);
+                // save the solution
+                solution_nodes_.push_back(*node);
             }
         }
         if (!(word_property & Dictionary::IS_SUB_WORD))
@@ -128,6 +137,13 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
         }
         delete node;  // get rid of this old node
     }  // end of the while loop
+
+    // sort the nodes
+    std::sort(solution_nodes_.begin(), solution_nodes_.end(), NodeIsWorse);
+    for (const Node &node : solution_nodes_)
+    {
+        PrintSolution(&node);
+    }
     return words_found_.size();
 }
 
