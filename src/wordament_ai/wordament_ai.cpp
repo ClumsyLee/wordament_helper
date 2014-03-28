@@ -46,8 +46,7 @@ struct WordamentAI::Node
 // functions for WordamentAI
 WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
         : dictionary_(),
-          dictionary_word_count_(0),
-          node_stack_()
+          dictionary_word_count_(0)
 {
     // load dictionaries
     for (std::string filename : dictionary_files)
@@ -67,6 +66,7 @@ WordamentAI::WordamentAI(const std::vector<std::string> &dictionary_files)
 
 int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 {
+    std::stack<Node *> node_stack;
     // save the solution nodes and the words
     std::vector<Node> solution_nodes;
     std::unordered_set<std::string> words_found;
@@ -77,15 +77,15 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
         {
             // create new node so it will deal with last '-' in prefix
             Node *node = new Node(row, col, game_map[row][col]);
-            node_stack_.push(node);
+            node_stack.push(node);
         }
     // keep popping, until the stack is empty
     // words will be checked in dictionary when the nodes are popped
-    while (!node_stack_.empty())
+    while (!node_stack.empty())
     {
         // popping the first node in stack
-        Node *node = node_stack_.top();
-        node_stack_.pop();
+        Node *node = node_stack.top();
+        node_stack.pop();
 
         // checking this node
         int word_property = dictionary_.LookUp(node->word_now);
@@ -125,7 +125,7 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
 
             // build new node from old one
             Node *new_node = new Node(node, direction, game_map[row][col]);
-            node_stack_.push(new_node);
+            node_stack.push(new_node);
         }
         delete node;  // get rid of this old node
     }  // end of the while loop

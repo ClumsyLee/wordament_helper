@@ -32,7 +32,6 @@ class WordamentAI
 
     Dictionary dictionary_;
     std::int_least32_t dictionary_word_count_;
-    std::stack<Node *> node_stack_;
 };
 
 inline bool WordamentAI::IsPrefix(const std::string &word)
