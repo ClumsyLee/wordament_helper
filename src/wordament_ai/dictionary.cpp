@@ -19,6 +19,8 @@ std::int_least32_t Dictionary::ReadWordsFromFile(const char *filename)
         if (word.size() < LEAST_LENGTH)  // word is too short
             continue;
         // then word has at least LEAST_LENGTH character
+        // transform it into lower case
+        std::transform(word.begin(), word.end(), word.begin(), tolower);
         for (auto word_iter = word.begin() + 1; word_iter != word.end();
              ++word_iter)
         {
