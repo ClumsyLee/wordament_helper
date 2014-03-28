@@ -73,15 +73,10 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
         for (int col = 0; col < GAME_MAP_SIZE; col++)
         {
             // as far as I know, one-square will not form a word in the game
-            // so any whole word that is in dictionary here will not be printed
-            // also, although no need to cut node here
-            // but there are only 16 squares, so why not?
-            const std::string &word = game_map[row][col];
-            if (dictionary_.LookUp(word))
-            {
-                Node *node = new Node(row, col, word);
-                node_stack_.push(node);
-            }
+            // so any whole word that is in dictionary here will not be saved.
+            // create new node so it will deal with last '-' in prefix
+            Node *node = new Node(row, col, game_map[row][col]);
+            node_stack_.push(node);
         }
     // keep popping, until the stack is empty
     // words will be checked in dictionary when the nodes are popped
@@ -117,10 +112,14 @@ int WordamentAI::FindWords(const std::string game_map[][GAME_MAP_SIZE])
         {
             int row = node->currrent_row + direction_row_offset[direction];
             int col = node->currrent_col + direction_col_offset[direction];
-            // cut invalid directions
+            // cut invalid directions:
+            // 1. out of bound
+            // 2. already taken
+            // 3. is a prefix
             if (row < 0 || col < 0 ||
                 row >= GAME_MAP_SIZE || col >= GAME_MAP_SIZE ||
-                node->moved_squares[row][col])
+                node->moved_squares[row][col] ||
+                IsPrefix(game_map[row][col]))
                 continue;
 
             // build new node from old one
@@ -206,6 +205,11 @@ WordamentAI::Node::Node(int row, int col, const std::string &word)
           previous_moves(),
           word_now(word)
 {
+    // prefix can only be added by this function (brand new node)
+    if (IsPrefix(word))
+    {
+        word.pop_end();  // delete the last '-'
+    }
     moved_squares[row][col] = true;
 }
 
@@ -218,11 +222,13 @@ WordamentAI::Node::Node(const Node *old_node, int direction,
           previous_moves(old_node->previous_moves),
           word_now(old_node->word_now)
 {
+    // copy the old status
     for (int row = 0; row < GAME_MAP_SIZE; row++)
         for (int col = 0; col < GAME_MAP_SIZE; col++)
         {
             moved_squares[row][col] = old_node->moved_squares[row][col];
         }
+    // update status
     moved_squares[currrent_row][currrent_col] = true;
     previous_moves.push_back(direction);  // record direction
     word_now += add_on_word;  // avoid temporary string object
