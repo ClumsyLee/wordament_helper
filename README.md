@@ -5,14 +5,15 @@ competing with the whole internet to be the best word searcher in every game.
 
 And Wordament AI is a tool to help you (or, me) to get a "better" score in the game.
 
+In fact, it is hardly an AI, because it simply uses depth-first search to find words in a dictionary.
+
 At present it only supports Unix-like systems (Linux, OS X, etc.).
 
 ## Features
 
 * Short responsing time.
-
 * Visual solutions displayed in color.
-
+* Sort the solutions by thire scores.
 
 ## Installation
 
