@@ -1,7 +1,7 @@
 #include "wordament_ai/wordament_ai.h"
 #include <cstdlib>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 namespace
 {

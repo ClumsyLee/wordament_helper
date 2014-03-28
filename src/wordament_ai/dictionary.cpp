@@ -1,7 +1,9 @@
 #include "dictionary.h"
+#include <cctype>
+#include <algorithm>
 #include <fstream>
-#include <utility>
 #include <iostream>
+#include <utility>
 
 namespace wordament_ai
 {

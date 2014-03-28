@@ -2,9 +2,9 @@
 #define WORDAMENT_AI_WORDAMENT_AI_H_
 
 #include <cstdint>
+#include <stack>
 #include <string>
 #include <vector>
-#include <stack>
 #include "wordament_ai/dictionary.h"
 
 
