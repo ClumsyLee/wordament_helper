@@ -41,11 +41,22 @@ std::int_least32_t Dictionary::ReadWordsFromFile(const char *filename)
                                               (word, IS_WORD));
         // if the word was not in the map, it is added correctly.
         // if the word was already in the map, nothing happened,
-        // so we make sure it has "IS_WORD" property
-        if (insert_reslut.second == false)
-            insert_reslut.first->second |= IS_WORD;
-        word_count++;
+        // so we make sure it has "IS_WORD" property, add increase
+        // counter when it is a new word
+        if (insert_reslut.second == true)  // new word
+        {
+            word_count++;
+        }
+        else  // it is a sub-word or word existed in the dictionary
+        {
+            if ((insert_reslut.first->second & IS_WORD) == 0)  // new word
+            {
+                insert_reslut.first->second |= IS_WORD;
+                word_count++;
+            }
+        }
     }
+
     return word_count;
 }
 
