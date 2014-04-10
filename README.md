@@ -1,10 +1,10 @@
-# Wordament AI
+# Wordament Helper
 
-Wordament AI is a tool to help you (or, me) to get a "better" score in the game *"Wordament"*.
+Wordament Helper is a tool to help you (or, me) to get a "better" score in the game *"Wordament"*.
 
 *[Wordament™](http://wordament.com)* is a unique kind of word game—a word tournament—where you are competing with the whole internet to be the best word searcher in every game.
 
-In fact, it is hardly an AI, because it simply uses depth-first search to find words in a dictionary.
+In fact, it is hardly an AI, as it simply uses depth-first search to find words in a dictionary.
 
 At present it only supports Unix-like systems (Linux, OS X, etc.).
 
